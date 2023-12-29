@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class Firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,13 +16,13 @@ namespace Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Rows = table.Column<int>(type: "int", nullable: false),
-                    Columns = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Columns = table.Column<int>(type: "int", nullable: false),
                     DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Arrivaldate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CountryFrom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CountryTo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WholesalePrice = table.Column<float>(type: "real", nullable: false),
-                    CommissionRate = table.Column<float>(type: "real", nullable: false)
+                    WholesalePrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CommissionRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {

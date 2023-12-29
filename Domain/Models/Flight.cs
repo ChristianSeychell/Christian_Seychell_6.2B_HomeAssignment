@@ -15,7 +15,7 @@ namespace Domain.Models
 
         public int Rows { get; set; }
 
-        public string Columns { get; set; }
+        public int Columns { get; set; }
 
         public DateTime DepartureDate { get; set; }
 
@@ -25,8 +25,8 @@ namespace Domain.Models
 
         public string CountryTo { get; set; }
 
-        public float WholesalePrice { get; set; }
-        public float CommissionRate { get; set; }
+        public decimal WholesalePrice { get; set; }
+        public decimal CommissionRate { get; set; }
 
      }
 }

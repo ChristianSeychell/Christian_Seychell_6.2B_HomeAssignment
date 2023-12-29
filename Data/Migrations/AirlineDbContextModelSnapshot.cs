@@ -33,12 +33,11 @@ namespace Data.Migrations
                     b.Property<DateTime>("Arrivaldate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Columns")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Columns")
+                        .HasColumnType("int");
 
-                    b.Property<float>("CommissionRate")
-                        .HasColumnType("real");
+                    b.Property<decimal>("CommissionRate")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CountryFrom")
                         .IsRequired()
@@ -54,8 +53,8 @@ namespace Data.Migrations
                     b.Property<int>("Rows")
                         .HasColumnType("int");
 
-                    b.Property<float>("WholesalePrice")
-                        .HasColumnType("real");
+                    b.Property<decimal>("WholesalePrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

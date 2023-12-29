@@ -1,4 +1,5 @@
 using Data.Context;
+using Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Presentation;
@@ -20,8 +21,10 @@ namespace Presentation
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AirlineDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped(typeof(FlightDbRepository)); builder.Services.AddScoped(typeof(TicketDbRepository));
 
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

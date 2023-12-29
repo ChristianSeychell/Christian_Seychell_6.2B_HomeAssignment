@@ -35,7 +35,6 @@ namespace Data.Repositories
             }
         }
 
-
         public void cancel(Ticket ticket) 
         {
             var existingTicket = _Context.Ticket.FirstOrDefault(t => t.Id == ticket.Id);

@@ -7,9 +7,7 @@ namespace Presentation.Models.ViewModel
     {
         public int Id { get; set; }
 
-        public int Rows { get; set; }
-
-        public string Columns { get; set; }
+        public int Seats { get; set; }
 
         public DateTime DepartureDate { get; set; }
 
@@ -19,6 +17,8 @@ namespace Presentation.Models.ViewModel
 
         public string CountryTo { get; set; }
 
-        public float price { get; set; }
+        public decimal price { get; set; }
+
+        
     }
 }
