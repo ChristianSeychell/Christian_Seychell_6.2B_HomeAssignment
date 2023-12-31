@@ -54,12 +54,27 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult Book(int flightId,decimal pricePaid)
         {
-            var viewModel = new BookViewModel
-            {
-                FlightId = flightId,
-                PricePaid = pricePaid
-            };
+            BookViewModel viewModel;
 
+            if (User.Identity.IsAuthenticated)
+            {
+                viewModel = new BookViewModel
+                {
+
+                    FlightId = flightId,
+                    PricePaid = pricePaid,
+                    Passport = _ticketRepository.GetTicket(id)
+                };
+            }
+            else
+            {
+                viewModel = new BookViewModel
+                {
+
+                    FlightId = flightId,
+                    PricePaid = pricePaid
+                };
+            }
             return View(viewModel);
         }
 
@@ -113,7 +128,7 @@ namespace Presentation.Controllers
             }
             return View(b);
         }
-
+        [Authorize]
         public IActionResult Tickets(int id)
         {
             IQueryable<Ticket> list = _ticketRepository.GetTickets();
