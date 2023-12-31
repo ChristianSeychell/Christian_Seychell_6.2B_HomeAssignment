@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data.Context
 {
-    public class AirlineDbContext : DbContext
+    public class AirlineDbContext : IdentityDbContext
     {
 
         public AirlineDbContext(DbContextOptions<AirlineDbContext> options)
@@ -19,5 +20,11 @@ namespace Data.Context
 
         public DbSet<Flight> flight {  get; set; }
 
-    } 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
+
+    }
 }

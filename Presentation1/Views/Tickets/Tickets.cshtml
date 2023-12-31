@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Presentation.Models.ViewModel.TicketViewModel>
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<h1>Tickets</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePaid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cancelled)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Passport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePaid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cancelled)
+            </td>
+            <td>
+                @if (!item.Cancelled)
+                    {
+                        <a href="@Url.Action("Cancel", "Tickets", new { ticketId = item.Id })" onclick='return window.confirm("Are you sure you want to cancel this ticket?")'>Cancel</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

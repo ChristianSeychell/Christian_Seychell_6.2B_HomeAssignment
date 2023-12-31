@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Repositories 
-{ 
+{
     public class TicketDbRepository
     {
 
@@ -30,12 +30,12 @@ namespace Data.Repositories
 
             if (!TicketBooked)
             {
-            _Context.Ticket.Add(ticket);
-            _Context.SaveChanges();
+                _Context.Ticket.Add(ticket);
+                _Context.SaveChanges();
             }
         }
 
-        public void cancel(Ticket ticket) 
+        public void cancel(Ticket ticket)
         {
             var existingTicket = _Context.Ticket.FirstOrDefault(t => t.Id == ticket.Id);
 
@@ -50,6 +50,24 @@ namespace Data.Repositories
         {
             return _Context.Ticket;
         }
+        public IQueryable<Ticket> GetTicketInfo(int ticketId)
+        {
+            return _Context.Ticket.Where(t => t.Id == ticketId);
+        }
 
+        public IQueryable<Ticket> GetFlightTickets(int FlightId)
+        {
+            return _Context.Ticket.Where(t => t.FlightIdFk == FlightId);
+
+        }
+
+
+        //-----------------
+        //Modifications
+
+        public int GetSeatsBooked(int flightId)
+        {
+            return _Context.Ticket.Count(t => t.FlightIdFk == flightId && !t.Cancelled);
+        }
     }
 }

@@ -27,6 +27,8 @@ namespace Domain.Models
 
         public decimal PricePaid { get; set; }
 
+        public string? Image { get; set; }
+
         public Boolean Cancelled { get; set; }
 
     }   
