@@ -10,7 +10,12 @@ namespace Presentation.Models.ViewModel
 
         public string Column { get; set; }
 
+        public int seats {  get; set; }
         public int FlightId { get; set; }
+
+        public int Maxrows {  get; set; }  
+
+        public int Maxcols { get; set; }
 
         public string Passport { get; set; }
 

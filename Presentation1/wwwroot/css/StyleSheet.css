@@ -1,0 +1,37 @@
+﻿.seat-map-container {
+    position: relative;
+}
+
+.seat-map-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.seat-buttons-overlay {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.seat-row {
+    display: flex;
+    padding:40px;
+    margin-top:80px;
+}
+
+.seat-button {
+    width: 30px; /* Adjust the width of the seat button */
+    height: 30px; /* Adjust the height of the seat button */
+    margin: 2px; /* Adjust the margin between buttons */
+    background-color: #3498db; /* Set a background color */
+    color: #fff; /* Set text color */
+    border: none; /* Remove button border */
+    cursor: pointer;
+}
+
+.seat-map-image {
+    width: 250px; /* Adjust the width of the image */
+    height: 900px; /* Adjust the height of the image */
+}

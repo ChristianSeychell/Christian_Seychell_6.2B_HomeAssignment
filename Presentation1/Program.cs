@@ -1,5 +1,6 @@
 using Data.Context;
 using Data.Repositories;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,10 @@ namespace Presentation1
                 .AddEntityFrameworkStores<AirlineDbContext>();
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped(typeof(FlightDbRepository)); builder.Services.AddScoped(typeof(TicketDbRepository));
+            string absolutePath = builder.Environment.ContentRootPath + "Data\\Tickets.json";
+
+            builder.Services.AddScoped<ITicketRepository, TicketFileRepository>(x=> new TicketFileRepository(absolutePath));
+            builder.Services.AddScoped<FlightDbRepository>();
 
 
             var app = builder.Build();

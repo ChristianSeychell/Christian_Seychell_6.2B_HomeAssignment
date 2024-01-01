@@ -1,17 +1,19 @@
 ﻿using Data.Context;
 using Data.Repositories;
+using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.ViewModel;
+using System.Net.Sockets;
 
 namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        private TicketDbRepository _ticketRepository;
+        private ITicketRepository _ticketRepository;
         private FlightDbRepository _flightRepository;
 
-        public AdminController(TicketDbRepository ticketRepository,
+        public AdminController(ITicketRepository ticketRepository,
             FlightDbRepository flightRepository)
         {
 
@@ -54,10 +56,15 @@ namespace Presentation.Controllers
             return View(output);
         }
 
-        public IActionResult TicketDetails(int ticketId, int flightId)
+        public IActionResult TicketDetails(int ticketId)
         {
-            var ticketDetail = (from ticket in _ticketRepository.GetTickets()
-                                join flight in _flightRepository.getFlights() on ticket.FlightIdFk equals flight.Id
+            var tickets = _ticketRepository.GetTickets();
+            var flightIds = tickets.Where(t => t.Id == ticketId).Select(t => t.FlightIdFk).FirstOrDefault();
+
+            // Assuming _flightRepository.getFlights() returns a list of Flight objects
+            var flight = _flightRepository.getFlights().FirstOrDefault(f => f.Id == flightIds);
+
+            var ticketDetail = (from ticket in tickets
                                 where ticket.Id == ticketId
                                 select new TicketViewModel
                                 {
@@ -70,7 +77,7 @@ namespace Presentation.Controllers
                                     Cancelled = ticket.Cancelled,
                                     image = ticket.Image,
                                     // Flight info
-                                    DepartureDate = flight.DepartureDate.ToString("yyyy-MM-dd HH:mm"), // Adjust the format accordingly
+                                    DepartureDate = flight.DepartureDate.ToString("yyyy-MM-dd HH:mm"),
                                     ArrivalDate = flight.Arrivaldate.ToString("yyyy-MM-dd HH:mm"),
                                     CountryFrom = flight.CountryFrom,
                                     CountryTo = flight.CountryTo,
@@ -83,6 +90,7 @@ namespace Presentation.Controllers
             }
 
             return View(ticketDetail);
+        
         }
 
     }

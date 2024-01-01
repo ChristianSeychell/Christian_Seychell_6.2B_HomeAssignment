@@ -10,11 +10,11 @@ namespace Data.Repositories
 {
     public class FlightDbRepository
     {
-        private AirlineDbContext _Context;
+        private AirlineDbContext _AirlineContext;
 
         public FlightDbRepository(AirlineDbContext Context)
         {
-            _Context = Context;
+            _AirlineContext = Context;
         }
 
         public Flight? GetFlight(int id)
@@ -24,7 +24,7 @@ namespace Data.Repositories
 
         public IQueryable<Flight> getFlights()
         {
-            return _Context.flight;
+            return _AirlineContext.flight;
         }
     }
 }
