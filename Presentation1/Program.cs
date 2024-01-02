@@ -27,9 +27,9 @@ namespace Presentation1
 
             string absolutePath = builder.Environment.ContentRootPath + "Data\\Tickets.json";
 
-            builder.Services.AddScoped<ITicketRepository, TicketFileRepository>(x=> new TicketFileRepository(absolutePath));
+            //builder.Services.AddScoped<ITicketRepository, TicketFileRepository>(x=> new TicketFileRepository(absolutePath));
             builder.Services.AddScoped<FlightDbRepository>();
-
+            builder.Services.AddScoped<ITicketRepository, TicketDbRepository>();
 
             var app = builder.Build();
 

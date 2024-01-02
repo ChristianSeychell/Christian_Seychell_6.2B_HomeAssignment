@@ -1,5 +1,6 @@
 ﻿.seat-map-container {
     position: relative;
+
 }
 
 .seat-map-wrapper {
@@ -13,25 +14,23 @@
     position: absolute;
     top: 0;
     left: 0;
+    margin-top: 200px
 }
 
 .seat-row {
-    display: flex;
-    padding:40px;
-    margin-top:80px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 80px;
 }
 
 .seat-button {
-    width: 30px; /* Adjust the width of the seat button */
-    height: 30px; /* Adjust the height of the seat button */
-    margin: 2px; /* Adjust the margin between buttons */
-    background-color: #3498db; /* Set a background color */
-    color: #fff; /* Set text color */
-    border: none; /* Remove button border */
+    width: 30px; 
+    height: 30px; 
+    margin: 2px; 
+    background-color: #3498db; 
+    color: #fff; 
+    border: none; 
     cursor: pointer;
 }
 
-.seat-map-image {
-    width: 250px; /* Adjust the width of the image */
-    height: 900px; /* Adjust the height of the image */
-}
+

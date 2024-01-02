@@ -88,11 +88,6 @@ namespace Data.Repositories
 
                 System.IO.File.WriteAllText(filePath, jsonString);
             }
-            else
-            {
-                //temp data
-            }
-
 
         }
 
