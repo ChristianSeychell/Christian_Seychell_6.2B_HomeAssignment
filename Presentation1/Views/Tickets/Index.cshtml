@@ -58,11 +58,39 @@
                 @Html.DisplayFor(modelItem => item.price)
             </td>
             <td>
-                @if(item.Seats>0){
-                        @Html.ActionLink("Book", "Book", new { FlightId = item.Id, PricePaid = item.price , seats = item.Seats})
-                }
+                    @if (item.Seats > 0)
+                    {
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            @Html.ActionLink("Book", "Book", new { FlightId = item.Id, PricePaid = item.price, seats = item.Seats })
+                        }
+                        else
+                        {
+                            <a onclick="test('@item.Id', '@item.price', '@item.Seats')" id="BookChoice">Book</a>
+                        }
+                    }
+                 
+
+                    
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script>
+    function test(flightId, price, seats) {
+        var Response = window.confirm("Are you sure you want to book a flight without being logged in?");
+
+        if (Response) {
+            // User chose to continue as a guest
+            window.location.href = '@Url.Action("Book", "Tickets")' + '?FlightId=' + flightId + '&PricePaid=' + price + '&seats=' + seats;
+        }
+        else {
+            // User chose to log in
+            window.location.href = '/Identity/Account/Login';
+
+
+        }
+    }
+</script>

@@ -35,6 +35,9 @@ namespace Data.Repositories
                 _AirlineContext.Ticket.Add(ticket);
                 _AirlineContext.SaveChanges();
             }
+            
+
+
         }
 
         public void cancel(Ticket ticket)

@@ -3,6 +3,7 @@ using Data.Repositories;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -21,14 +22,16 @@ namespace Presentation.Controllers
             private ITicketRepository _ticketRepository;
             private FlightDbRepository _flightRepository;
             private AirlineDbContext _airlineDbContext;
+                private UserManager<ApplicationUser> _userManager;
 
             public TicketsController(ITicketRepository ticketRepository,
-                FlightDbRepository flightRepository, AirlineDbContext airlineDbContext)
+                FlightDbRepository flightRepository, AirlineDbContext airlineDbContext, UserManager<ApplicationUser> userManager)
             {
 
                 _ticketRepository = ticketRepository;
                 _flightRepository = flightRepository;
                 _airlineDbContext = airlineDbContext;
+                _userManager = userManager;
 
             }
 
@@ -56,14 +59,36 @@ namespace Presentation.Controllers
                 return View(output);
             }
 
+
+            
             [HttpGet]
-            public IActionResult Book(int flightId, decimal pricePaid, int seats)
+        [AllowAnonymous]
+        public async Task<IActionResult> BookAsync(int flightId, decimal pricePaid, int seats)
             {
                 var flight = _flightRepository.GetFlight(flightId);
-
                 int maxRows = flight.Rows;
                 int maxCols = flight.Columns;
 
+                var user = await _userManager.GetUserAsync(User);
+
+            if (User.Identity.IsAuthenticated)
+            {
+               
+                    BookViewModel viewModel = new BookViewModel
+                    {
+
+                        FlightId = flightId,
+                        PricePaid = pricePaid,
+                        Maxrows = maxRows,
+                        Maxcols = maxCols,
+                        Passport = user.Passport
+                    };
+                    return View(viewModel);
+
+
+            }
+            else
+            {
                 BookViewModel viewModel = new BookViewModel
                 {
 
@@ -72,8 +97,8 @@ namespace Presentation.Controllers
                     Maxrows = maxRows,
                     Maxcols = maxCols,
                 };
-
                 return View(viewModel);
+            }
 
             }
 
@@ -82,7 +107,7 @@ namespace Presentation.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var TicketBooked = _airlineDbContext.Ticket.Any(t => t.Row == b.Row &&
+                    var TicketBooked = _ticketRepository.GetTickets().FirstOrDefault(t => t.Row == b.Row &&
                                                                          t.Column == b.Column &&
                                                                         t.FlightIdFk == b.FlightId &&
                                                                          !t.Cancelled);
@@ -103,7 +128,7 @@ namespace Presentation.Controllers
                         }
                     }
 
-                    if (!TicketBooked)
+                if (TicketBooked == null)
                     {
                         var flight = _flightRepository.GetFlight(b.FlightId);
 
@@ -134,19 +159,25 @@ namespace Presentation.Controllers
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        b.cancelled = false;
-                        _airlineDbContext.SaveChanges();
-                    }
                 }
+                else
+                {
+                    
+                   TempData["error"] = "Ticket is already booked";       
+                    
+                }
+
+
+            }
                 return View(b);
             }
-            //[Authorize]
-            public IActionResult Tickets(string passport)
+
+            [Authorize]
+            public async Task<IActionResult> TicketsAsync()
             {
-                IQueryable<Ticket> list = _ticketRepository.GetTickets().Where(t => t.Passport == passport);
+
+            var user = await _userManager.GetUserAsync(User);
+            List<Ticket> list = _ticketRepository.GetTickets().Where(t => t.Passport == user.Passport).ToList();
                 var output = from t in list
                              select new TicketViewModel()
                              {
@@ -165,21 +196,26 @@ namespace Presentation.Controllers
             {
                 var ticket = _ticketRepository.GetTicketInfo(ticketId).FirstOrDefault();
 
-                if (ticket == null)
-                {
-                    // TEmp data
-                    return NotFound();
-                }
-
-                if (ticket.Cancelled)
-                {
-                    return RedirectToAction("Tickets");
-                }
-
                 _ticketRepository.cancel(ticket);
 
                 return RedirectToAction("Index");
             }
+
+        public IActionResult CheckSeatAailable(int FlightId, int row, string column)
+        {
+            var TicketBooked = _ticketRepository.GetTickets().FirstOrDefault(t => t.Row == row &&
+                                                                        t.Column == column &&
+                                                                       t.FlightIdFk == FlightId &&
+                                                                        !t.Cancelled);
+            if (TicketBooked == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json("The seat is Taken");
+            }
+
         }
-    
+    }
 }

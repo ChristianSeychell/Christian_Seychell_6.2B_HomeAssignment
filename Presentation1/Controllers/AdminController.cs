@@ -2,12 +2,14 @@
 using Data.Repositories;
 using Domain.Interfaces;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.ViewModel;
 using System.Net.Sockets;
 
 namespace Presentation.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private ITicketRepository _ticketRepository;

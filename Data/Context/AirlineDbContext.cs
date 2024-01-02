@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Data.Context
 {
-    public class AirlineDbContext : IdentityDbContext
+    public class AirlineDbContext : IdentityDbContext<ApplicationUser>
     {
-
+        public string passport { get; set; }
         public AirlineDbContext(DbContextOptions<AirlineDbContext> options)
             : base(options)
         { }
@@ -26,5 +26,15 @@ namespace Data.Context
         }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(e => e.Passport)
+                .HasMaxLength(250);
+
+        }
     }
 }
